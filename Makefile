@@ -41,8 +41,6 @@ IS_AUTHENTICATED ?= false
 JOB_NAME ?= job
 JOB_EMAIL ?= job@job.job
 
-GO_TEST_TIMEOUT ?= 30m
-
 COMPONENTS_DIR = components
 -include $(COMPONENTS_DIR)/Makefile
 
