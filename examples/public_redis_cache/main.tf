@@ -44,6 +44,7 @@ module "redis_cache" {
   family                        = var.family
   sku_name                      = var.sku_name
   enable_non_ssl_port           = var.enable_non_ssl_port
+  firewall_rules                = var.firewall_rules
   identity_ids                  = var.identity_ids
   minimum_tls_version           = var.minimum_tls_version
   patch_schedule                = var.patch_schedule

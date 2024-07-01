@@ -70,3 +70,13 @@ resource "azurerm_redis_cache" "redis" {
 
   tags = local.tags
 }
+
+resource "azurerm_redis_firewall_rule" "fw_rule" {
+  for_each = var.firewall_rules
+
+  name                = each.key
+  redis_cache_name    = azurerm_redis_cache.redis.name
+  resource_group_name = var.resource_group_name
+  start_ip            = each.value.start_ip
+  end_ip              = each.value.end_ip
+}

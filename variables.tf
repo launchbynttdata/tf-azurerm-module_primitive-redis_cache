@@ -52,6 +52,15 @@ variable "enable_non_ssl_port" {
   default     = false
 }
 
+variable "firewall_rules" {
+  description = "Map of firewall rules to apply to the Redis cache"
+  type = map(object({
+    start_ip = string
+    end_ip   = string
+  }))
+  default = {}
+}
+
 variable "identity_ids" {
   description = <<EOT
     Specifies a list of user managed identity ids to be assigned.
