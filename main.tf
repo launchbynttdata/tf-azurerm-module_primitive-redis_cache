@@ -19,7 +19,6 @@ resource "azurerm_redis_cache" "redis" {
   sku_name            = var.sku_name
 
   public_network_access_enabled = var.public_network_access_enabled
-  enable_non_ssl_port           = var.enable_non_ssl_port
   minimum_tls_version           = var.minimum_tls_version
 
   private_static_ip_address = var.private_static_ip_address
@@ -42,7 +41,6 @@ resource "azurerm_redis_cache" "redis" {
       aof_backup_enabled                      = redis_configuration.value.aof_backup_enabled
       aof_storage_connection_string_0         = redis_configuration.value.aof_storage_connection_string_0
       aof_storage_connection_string_1         = redis_configuration.value.aof_storage_connection_string_1
-      enable_authentication                   = redis_configuration.value.enable_authentication
       active_directory_authentication_enabled = redis_configuration.value.active_directory_authentication_enabled
       maxmemory_reserved                      = redis_configuration.value.maxmemory_reserved
       maxmemory_delta                         = redis_configuration.value.maxmemory_delta
