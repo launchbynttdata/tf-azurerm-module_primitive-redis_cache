@@ -97,7 +97,7 @@ variable "location" {
 variable "capacity" {
   description = "The size of the Redis cache"
   type        = number
-  default     = 1
+  default     = 0
 }
 
 variable "family" {
