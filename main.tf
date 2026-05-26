@@ -10,61 +10,51 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-resource "azurerm_redis_cache" "redis" {
+resource "azurerm_managed_redis" "redis" {
   name                = var.name
   location            = var.location
   resource_group_name = var.resource_group_name
-  capacity            = var.capacity
-  family              = var.family
   sku_name            = var.sku_name
 
-  public_network_access_enabled = var.public_network_access_enabled
-  minimum_tls_version           = var.minimum_tls_version
+  high_availability_enabled = var.high_availability_enabled
+  public_network_access     = var.public_network_access
 
-  private_static_ip_address = var.private_static_ip_address
-  subnet_id                 = var.subnet_id
-
-  identity {
-    type         = var.identity_ids != null ? "SystemAssigned, UserAssigned" : "SystemAssigned"
-    identity_ids = var.identity_ids
-  }
-
-  redis_version = var.redis_version
-
-  replicas_per_master  = var.replicas_per_master
-  replicas_per_primary = var.replicas_per_primary
-  shard_count          = var.shard_count
-
-  dynamic "redis_configuration" {
-    for_each = var.redis_configuration != null ? [var.redis_configuration] : []
+  dynamic "identity" {
+    for_each = var.identity != null ? [var.identity] : []
     content {
-      aof_backup_enabled                      = redis_configuration.value.aof_backup_enabled
-      aof_storage_connection_string_0         = redis_configuration.value.aof_storage_connection_string_0
-      aof_storage_connection_string_1         = redis_configuration.value.aof_storage_connection_string_1
-      active_directory_authentication_enabled = redis_configuration.value.active_directory_authentication_enabled
-      maxmemory_reserved                      = redis_configuration.value.maxmemory_reserved
-      maxmemory_delta                         = redis_configuration.value.maxmemory_delta
-      maxmemory_policy                        = redis_configuration.value.maxmemory_policy
-      data_persistence_authentication_method  = redis_configuration.value.data_persistence_authentication_method
-      maxfragmentationmemory_reserved         = redis_configuration.value.maxfragmentationmemory_reserved
-      rdb_backup_enabled                      = redis_configuration.value.rdb_backup_enabled
-      rdb_backup_frequency                    = redis_configuration.value.rdb_backup_frequency
-      rdb_backup_max_snapshot_count           = redis_configuration.value.rdb_backup_max_snapshot_count
-      rdb_storage_connection_string           = redis_configuration.value.rdb_storage_connection_string
-      storage_account_subscription_id         = redis_configuration.value.storage_account_subscription_id
+      type         = identity.value.type
+      identity_ids = identity.value.identity_ids
     }
   }
 
-  dynamic "patch_schedule" {
-    for_each = var.patch_schedule != null ? var.patch_schedule : []
+  dynamic "customer_managed_key" {
+    for_each = var.customer_managed_key != null ? [var.customer_managed_key] : []
     content {
-      day_of_week        = patch_schedule.value.day_of_week
-      start_hour_utc     = patch_schedule.value.start_hour_utc
-      maintenance_window = patch_schedule.value.maintenance_window
+      key_vault_key_id          = customer_managed_key.value.key_vault_key_id
+      user_assigned_identity_id = customer_managed_key.value.user_assigned_identity_id
     }
   }
 
-  zones = var.zones
+  dynamic "default_database" {
+    for_each = [var.default_database]
+    content {
+      access_keys_authentication_enabled            = lookup(default_database.value, "access_keys_authentication_enabled", false)
+      client_protocol                               = lookup(default_database.value, "client_protocol", "Encrypted")
+      clustering_policy                             = lookup(default_database.value, "clustering_policy", "OSSCluster")
+      eviction_policy                               = lookup(default_database.value, "eviction_policy", "VolatileLRU")
+      geo_replication_group_name                    = lookup(default_database.value, "geo_replication_group_name", null)
+      persistence_append_only_file_backup_frequency = lookup(default_database.value, "persistence_append_only_file_backup_frequency", null)
+      persistence_redis_database_backup_frequency   = lookup(default_database.value, "persistence_redis_database_backup_frequency", null)
+
+      dynamic "module" {
+        for_each = lookup(default_database.value, "modules", []) != null ? lookup(default_database.value, "modules", []) : []
+        content {
+          name = module.value.name
+          args = lookup(module.value, "args", null)
+        }
+      }
+    }
+  }
 
   tags = local.tags
 }

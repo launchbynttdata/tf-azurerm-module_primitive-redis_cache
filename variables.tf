@@ -12,7 +12,7 @@
 
 # COMMON
 variable "name" {
-  description = "Name of the Redis cache."
+  description = "Name of the Managed Redis instance."
   type        = string
 }
 
@@ -26,122 +26,68 @@ variable "resource_group_name" {
   type        = string
 }
 
-# Redis cache inputs
-
-variable "capacity" {
-  description = "The size of the Redis cache"
-  type        = number
-  default     = 1
-}
-
-variable "family" {
-  description = "The SKU family/pricing group to use"
-  type        = string
-  default     = "C"
-}
+# Managed Redis inputs
 
 variable "sku_name" {
-  description = "The type of SKU to use"
+  description = "The SKU of the Managed Redis instance. Examples: Balanced_B1, Balanced_B3, ComputeOptimized_X3, MemoryOptimized_M10."
   type        = string
-  default     = "Basic"
+  default     = "Balanced_B1"
 }
 
-
-variable "identity_ids" {
-  description = <<EOT
-    Specifies a list of user managed identity ids to be assigned.
-  EOT
-  type        = list(string)
-  default     = null
-}
-
-variable "minimum_tls_version" {
-  description = "The minimum TLS version. Defaults to 1.2"
-  type        = string
-  default     = "1.2"
-}
-
-variable "patch_schedule" {
-  description = "Window of time when the Redis cache can be patched"
-  type = list(object({
-    day_of_week        = string
-    start_hour_utc     = optional(string)
-    maintenance_window = optional(string)
-  }))
-  default = null
-}
-
-variable "private_static_ip_address" {
-  description = "The private IP address to use when `subnet_id` is set"
-  type        = string
-  default     = null
-}
-
-variable "public_network_access_enabled" {
-  description = "Allow public network access to the redis cache"
+variable "high_availability_enabled" {
+  description = "Whether to enable high availability for the Managed Redis instance. Defaults to true."
   type        = bool
   default     = true
 }
 
-variable "redis_configuration" {
-  description = "Additional options for the Redis cache"
+variable "public_network_access" {
+  description = "The public network access setting. Possible values are Enabled and Disabled."
+  type        = string
+  default     = "Disabled"
+
+  validation {
+    condition     = contains(["Enabled", "Disabled"], var.public_network_access)
+    error_message = "public_network_access must be Enabled or Disabled."
+  }
+}
+
+variable "identity" {
+  description = "Managed identity block. type is required (SystemAssigned, UserAssigned, or both). identity_ids required when UserAssigned."
   type = object({
-    aof_backup_enabled                      = optional(bool)
-    aof_storage_connection_string_0         = optional(string)
-    aof_storage_connection_string_1         = optional(string)
-    active_directory_authentication_enabled = optional(bool)
-    maxmemory_reserved                      = optional(number)
-    maxmemory_delta                         = optional(number)
-    maxmemory_policy                        = optional(string)
-    data_persistence_authentication_method  = optional(string)
-    maxfragmentationmemory_reserved         = optional(number)
-    rdb_backup_enabled                      = optional(bool)
-    rdb_backup_frequency                    = optional(number)
-    rdb_backup_max_snapshot_count           = optional(number)
-    rdb_storage_connection_string           = optional(string)
-    storage_account_subscription_id         = optional(string)
+    type         = string
+    identity_ids = optional(list(string))
   })
   default = null
 }
 
-variable "redis_version" {
-  description = "Major version of redis to use. Defaults to 6"
-  type        = string
-  default     = "6"
+variable "customer_managed_key" {
+  description = "Customer managed key block for encryption."
+  type = object({
+    key_vault_key_id          = string
+    user_assigned_identity_id = string
+  })
+  default = null
 }
 
-variable "replicas_per_master" {
-  description = "Number of replicas to create per master"
-  type        = number
-  default     = null
-}
-
-variable "replicas_per_primary" {
-  description = "Number of replicas to create per primary"
-  type        = number
-  default     = null
-}
-
-variable "shard_count" {
-  description = "The number of shards to create on the cluster"
-  type        = number
-  default     = null
-}
-
-variable "subnet_id" {
-  description = "ID of the subnet where the Redis cache should be deployed"
-  type        = string
-  default     = null
+variable "default_database" {
+  description = "Default database configuration block for the Managed Redis instance. Required when creating a new Managed Redis."
+  type = object({
+    access_keys_authentication_enabled            = optional(bool, false)
+    client_protocol                               = optional(string, "Encrypted")
+    clustering_policy                             = optional(string, "OSSCluster")
+    eviction_policy                               = optional(string, "VolatileLRU")
+    geo_replication_group_name                    = optional(string)
+    persistence_append_only_file_backup_frequency = optional(string)
+    persistence_redis_database_backup_frequency   = optional(string)
+    modules = optional(list(object({
+      name = string
+      args = optional(string)
+    })))
+  })
 }
 
 variable "tags" {
-  description = "Custom tags for the Redis cache"
+  description = "Custom tags for the Managed Redis instance."
   type        = map(string)
   default     = {}
-}
-
-variable "zones" {
-  description = "List of availability zones where the Redis cache should be located"
-  type        = list(string)
-  default     = null
 }

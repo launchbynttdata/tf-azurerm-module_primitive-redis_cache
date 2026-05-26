@@ -1,6 +1,9 @@
 locals {
-  default_tags = {
-    provisioner = "terraform"
-  }
-  tags = merge(local.default_tags, var.tags)
+  tags = merge(
+    var.tags,
+    {
+      provisioner   = "terraform"
+      resource_name = var.name
+    }
+  )
 }

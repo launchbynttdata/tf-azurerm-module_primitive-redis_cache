@@ -10,34 +10,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-output "redis_cache_id" {
-  value = azurerm_redis_cache.redis.id
+output "id" {
+  value       = azurerm_managed_redis.redis.id
+  description = "The ID of the Managed Redis instance."
 }
 
-output "redis_cache_hostname" {
-  value = azurerm_redis_cache.redis.hostname
+output "hostname" {
+  value       = azurerm_managed_redis.redis.hostname
+  description = "The DNS hostname of the Managed Redis cluster endpoint."
 }
 
-output "redis_cache_name" {
-  value = azurerm_redis_cache.redis.name
+output "name" {
+  value       = azurerm_managed_redis.redis.name
+  description = "The name of the Managed Redis instance."
 }
 
-output "redis_cache_primary_access_key" {
-  value     = azurerm_redis_cache.redis.primary_access_key
-  sensitive = true
+output "database_id" {
+  value       = azurerm_managed_redis.redis.default_database[0].id
+  description = "The ID of the default Managed Redis database."
 }
 
-output "redis_cache_secondary_access_key" {
-  value     = azurerm_redis_cache.redis.secondary_access_key
-  sensitive = true
+output "database_port" {
+  value       = azurerm_managed_redis.redis.default_database[0].port
+  description = "The TCP port of the default Managed Redis database endpoint."
 }
 
-output "redis_cache_primary_connection_string" {
-  value     = azurerm_redis_cache.redis.primary_connection_string
-  sensitive = true
+output "primary_access_key" {
+  value       = azurerm_managed_redis.redis.default_database[0].primary_access_key
+  sensitive   = true
+  description = "The primary access key of the default database (only available when access_keys_authentication_enabled=true)."
 }
 
-output "redis_cache_secondary_connection_string" {
-  value     = azurerm_redis_cache.redis.secondary_connection_string
-  sensitive = true
+output "secondary_access_key" {
+  value       = azurerm_managed_redis.redis.default_database[0].secondary_access_key
+  sensitive   = true
+  description = "The secondary access key of the default database (only available when access_keys_authentication_enabled=true)."
 }

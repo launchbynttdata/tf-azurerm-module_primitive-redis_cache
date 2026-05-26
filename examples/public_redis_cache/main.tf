@@ -22,6 +22,7 @@ module "resource_names" {
   class_env               = var.class_env
   cloud_resource_type     = each.value.name
   instance_env            = var.instance_env
+  instance_resource       = var.instance_resource
   maximum_length          = each.value.max_length
 }
 
@@ -39,24 +40,13 @@ module "redis_cache" {
   source     = "../../"
   depends_on = [module.resource_group]
 
-  name                          = local.redis_cache_name
-  resource_group_name           = module.resource_group.name
-  location                      = var.location
-  capacity                      = var.capacity
-  family                        = var.family
-  sku_name                      = var.sku_name
-  identity_ids                  = var.identity_ids
-  minimum_tls_version           = var.minimum_tls_version
-  patch_schedule                = var.patch_schedule
-  private_static_ip_address     = var.private_static_ip_address
-  public_network_access_enabled = var.public_network_access_enabled
-  redis_configuration           = var.redis_configuration
-  redis_version                 = var.redis_version
-  replicas_per_master           = var.replicas_per_master
-  replicas_per_primary          = var.replicas_per_primary
-  shard_count                   = var.shard_count
-  subnet_id                     = var.subnet_id
-  zones                         = var.zones
+  name                      = local.redis_cache_name
+  resource_group_name       = module.resource_group.name
+  location                  = var.location
+  sku_name                  = var.sku_name
+  high_availability_enabled = var.high_availability_enabled
+  public_network_access     = var.public_network_access
+  default_database          = var.default_database
 
   tags = merge(var.tags, { resource_name = module.resource_names["redis_cache"].standard })
 }
