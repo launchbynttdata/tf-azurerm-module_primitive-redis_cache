@@ -33,5 +33,5 @@ func TestRedisCacheModuleReadonly(t *testing.T) {
 		SetTestConfigFileName(infraTFVarFileNameDefault).
 		Build()
 
-	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestRedisCache)
+	lib.RunNonDestructiveTest(t, *ctx, testimpl.TestComposableRedisCache)
 }
