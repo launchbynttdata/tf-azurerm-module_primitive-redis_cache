@@ -77,7 +77,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|---------|
+|------|------|
 | [azurerm_redis_cache.redis](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/redis_cache) | resource |
 
 ## Inputs
@@ -107,7 +107,7 @@ No modules.
 ## Outputs
 
 | Name | Description |
-|------|---------|
+|------|-------------|
 | <a name="output_redis_cache_hostname"></a> [redis\_cache\_hostname](#output\_redis\_cache\_hostname) | n/a |
 | <a name="output_redis_cache_id"></a> [redis\_cache\_id](#output\_redis\_cache\_id) | n/a |
 | <a name="output_redis_cache_name"></a> [redis\_cache\_name](#output\_redis\_cache\_name) | n/a |
