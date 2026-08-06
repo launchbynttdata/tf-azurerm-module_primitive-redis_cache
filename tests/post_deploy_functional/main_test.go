@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	testConfigsExamplesFolderDefault = "../../examples"
+	testConfigsExamplesFolderDefault = "../../examples/public_redis_cache"
 	infraTFVarFileNameDefault        = "test.tfvars"
 )
 
