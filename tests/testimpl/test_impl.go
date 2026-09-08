@@ -3,8 +3,8 @@ package testimpl
 import (
 	"context"
 	"os"
-	"testing"
 	"strings"
+	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis"
@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRedisCache(t *testing.T, ctx types.TestContext) {
+func TestComposableRedisCache(t *testing.T, ctx types.TestContext) {
 	subscriptionId := os.Getenv("ARM_SUBSCRIPTION_ID")
 	if len(subscriptionId) == 0 {
 		t.Fatal("ARM_SUBSCRIPTION_ID environment variable is not set")
@@ -29,12 +29,12 @@ func TestRedisCache(t *testing.T, ctx types.TestContext) {
 	})
 }
 
-func checkRedisCacheId(t *testing.T, ctx types.TestContext, subscriptionId string, cred *azidentity.DefaultAzureCredential){
+func checkRedisCacheId(t *testing.T, ctx types.TestContext, subscriptionId string, cred *azidentity.DefaultAzureCredential) {
 	client := NewRedisCacheClient(t, subscriptionId, cred)
 
-	resourceGroupName := terraform.Output(t, ctx.TerratestTerraformOptions(), "resource_group_name")
-	redisCacheName := terraform.Output(t, ctx.TerratestTerraformOptions(), "redis_cache_name")
-	expectedID := terraform.Output(t, ctx.TerratestTerraformOptions(), "redis_cache_id")
+	resourceGroupName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "resource_group_name")
+	redisCacheName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "redis_cache_name")
+	expectedID := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "redis_cache_id")
 
 	redisCache, err := client.Get(context.TODO(), resourceGroupName, redisCacheName, nil)
 	if err != nil {
