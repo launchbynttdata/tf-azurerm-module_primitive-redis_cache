@@ -12,7 +12,7 @@
 
 module "resource_names" {
   source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
-  version = "~> 1.0"
+  version = "~> 2.0"
 
   for_each = var.resource_names_map
 
@@ -22,6 +22,7 @@ module "resource_names" {
   class_env               = var.class_env
   cloud_resource_type     = each.value.name
   instance_env            = var.instance_env
+  instance_resource       = var.instance_resource
   maximum_length          = each.value.max_length
 }
 

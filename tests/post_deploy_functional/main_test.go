@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	testConfigsExamplesFolderDefault = "../../examples"
+	testConfigsExamplesFolderDefault = "../../examples/public_redis_cache"
 	infraTFVarFileNameDefault        = "test.tfvars"
 )
 
@@ -31,7 +31,10 @@ func TestRedisCacheModule(t *testing.T) {
 		SetTestConfig(&testimpl.ThisTFModuleConfig{}).
 		SetTestConfigFolderName(testConfigsExamplesFolderDefault).
 		SetTestConfigFileName(infraTFVarFileNameDefault).
+		SetTestSpecificFlags(map[string]types.TestFlags{
+			"public_redis_cache": {},
+		}).
 		Build()
 
-	lib.RunSetupTestTeardown(t, *ctx, testimpl.TestRedisCache)
+	lib.RunSetupTestTeardown(t, *ctx, testimpl.TestComposableRedisCache)
 }
