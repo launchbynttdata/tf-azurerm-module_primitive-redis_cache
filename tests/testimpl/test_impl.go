@@ -32,9 +32,9 @@ func TestComposableRedisCache(t *testing.T, ctx types.TestContext) {
 func checkRedisCacheId(t *testing.T, ctx types.TestContext, subscriptionId string, cred *azidentity.DefaultAzureCredential) {
 	client := NewRedisCacheClient(t, subscriptionId, cred)
 
-	resourceGroupName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "resource_group_name")
-	redisCacheName := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "redis_cache_name")
-	expectedID := terraform.OutputContext(t, context.Background(), ctx.TerratestTerraformOptions(), "redis_cache_id")
+	resourceGroupName := terraform.OutputContext(t, t.Context(), ctx.TerratestTerraformOptions(), "resource_group_name")
+	redisCacheName := terraform.OutputContext(t, t.Context(), ctx.TerratestTerraformOptions(), "redis_cache_name")
+	expectedID := terraform.OutputContext(t, t.Context(), ctx.TerratestTerraformOptions(), "redis_cache_id")
 
 	redisCache, err := client.Get(context.TODO(), resourceGroupName, redisCacheName, nil)
 	if err != nil {

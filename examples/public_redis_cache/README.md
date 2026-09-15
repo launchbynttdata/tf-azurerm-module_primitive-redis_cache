@@ -20,7 +20,9 @@ Demonstrates a standard redis cache deployment into a resource group
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [random_integer.instance_resource](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/integer) | resource |
 
 ## Inputs
 
