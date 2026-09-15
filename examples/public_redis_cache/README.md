@@ -10,12 +10,6 @@ Demonstrates a standard redis cache deployment into a resource group
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.5 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.5 |
-
 ## Modules
 
 | Name | Source | Version |
