@@ -10,6 +10,12 @@ Demonstrates a standard redis cache deployment into a resource group
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 3.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.5 |
 
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.5 |
+
 ## Modules
 
 | Name | Source | Version |
@@ -33,7 +39,6 @@ Demonstrates a standard redis cache deployment into a resource group
 | <a name="input_family"></a> [family](#input\_family) | The SKU family/pricing group to use | `string` | `"C"` | no |
 | <a name="input_identity_ids"></a> [identity\_ids](#input\_identity\_ids) | Specifies a list of user managed identity ids to be assigned. | `list(string)` | `null` | no |
 | <a name="input_instance_env"></a> [instance\_env](#input\_instance\_env) | Number that represents the instance of the environment. | `number` | `0` | no |
-| <a name="input_instance_resource"></a> [instance\_resource](#input\_instance\_resource) | Number that represents the instance of the resource. | `number` | `0` | no |
 | <a name="input_location"></a> [location](#input\_location) | target resource group resource mask | `string` | `"eastus"` | no |
 | <a name="input_logical_product_family"></a> [logical\_product\_family](#input\_logical\_product\_family) | (Required) Name of the product family for which the resource is created.<br/>    Example: org\_name, department\_name. | `string` | `"launch"` | no |
 | <a name="input_logical_product_service"></a> [logical\_product\_service](#input\_logical\_product\_service) | (Required) Name of the product service for which the resource is created.<br/>    For example, backend, frontend, middleware etc. | `string` | `"redis"` | no |
