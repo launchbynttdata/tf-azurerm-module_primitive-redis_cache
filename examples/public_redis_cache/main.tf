@@ -10,11 +10,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-resource "random_integer" "instance_resource" {
-  min = 1
-  max = 100
-}
-
 module "resource_names" {
   source  = "terraform.registry.launch.nttdata.com/module_library/resource_name/launch"
   version = "~> 2.0"
@@ -27,7 +22,7 @@ module "resource_names" {
   class_env               = var.class_env
   cloud_resource_type     = each.value.name
   instance_env            = var.instance_env
-  instance_resource       = random_integer.instance_resource.result
+  instance_resource       = var.instance_resource
   maximum_length          = each.value.max_length
 }
 
